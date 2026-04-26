@@ -18,10 +18,31 @@ import CopyCode from '@/components/ui/CopyCode.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
 import { themeConfig } from '@/config'
+import { getCollection } from 'astro:content' // 💡 추가됨
 
 const { title, pubDate, readingTime, toc } = Astro.props as PostLayoutProps
 
-const postSlug = Astro.url.pathname.split('/').filter(Boolean).pop() || ''
+// 💡 관련 글 로직 시작
+const currentPath = Astro.url.pathname;
+const pathSegments = currentPath.split('/').filter(Boolean);
+const category = pathSegments[0] || 'log'; // 현재 카테고리 (log, reviews, works)
+
+// 해당 카테고리의 모든 글 가져와서 정렬
+const allPostsInCategory = (await getCollection(category as any))
+  .filter(post => !post.id.startsWith('_'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 현재 글의 위치 찾기
+const postSlug = pathSegments[pathSegments.length - 1] || '';
+const currentIndex = allPostsInCategory.findIndex(post => post.id === postSlug);
+
+// 현재 글 기준 전후 2개씩 추출 (최대 4개)
+const relatedPosts = allPostsInCategory.slice(
+  Math.max(0, currentIndex - 2),
+  Math.min(allPostsInCategory.length, currentIndex + 3)
+).filter(post => post.id !== postSlug);
+// 💡 관련 글 로직 끝
+
 const ogImage = `/open-graph/${postSlug}.png`
 ---
 
@@ -55,6 +76,27 @@ const ogImage = `/open-graph/${postSlug}.png`
         <article class="content">
           <slot />
         </article>
+
+        {/* 💡 관련 글 목록 영역 추가 */}
+        {relatedPosts.length > 0 && (
+          <footer class="related-posts-section">
+            <div class="related-divider"></div>
+            <h2 class="related-title">Read More in {category}</h2>
+            <ul class="custom-post-list">
+              {relatedPosts.map((post) => (
+                <li class="custom-post-item">
+                  <a href={`/${category}/${post.id}`} class="post-link">
+                    <span class="post-title">{post.data.title}</span>
+                    <span class="post-divider"></span>
+                    <span class="post-date">
+                      <FormattedDate date={post.data.pubDate} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </footer>
+        )}
       </div>
     </main>
     <ImageOptimizer />
@@ -79,4 +121,46 @@ const ogImage = `/open-graph/${postSlug}.png`
   .post-container main {
     flex: 1;
   }
+
+  /* 💡 관련 글 섹션 스타일 */
+  .related-posts-section {
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+  }
+
+  .related-divider {
+    height: 1px;
+    background: var(--text-primary);
+    opacity: 0.1;
+    margin-bottom: 2rem;
+  }
+
+  .related-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.4;
+    margin-bottom: 1.5rem;
+  }
+
+  .custom-post-list { list-style: none; padding: 0; }
+  .custom-post-item { margin-bottom: 0.8rem; }
+  .post-link { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    text-decoration: none; 
+    color: var(--text-primary); 
+    transition: opacity 0.2s; 
+  }
+  .post-link:hover { opacity: 0.5; }
+  .post-title { font-weight: 500; font-size: 0.95rem; }
+  .post-divider { 
+    flex-grow: 1; 
+    margin: 0 1rem; 
+    border-bottom: 1px dotted var(--text-secondary); 
+    opacity: 0.15; 
+  }
+  .post-date { font-size: 0.85rem; opacity: 0.4; }
 </style>

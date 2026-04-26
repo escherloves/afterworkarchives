@@ -3,12 +3,21 @@ import type { ThemeConfig } from './types'
 export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
-    website: 'https://chiri.the3ash.com/', // Site domain
-    title: 'CHIRI', // Site title
-    author: '3ASH', // Author name
-    description: 'Minimal blog built by Astro', // Site description
-    language: 'en-US' // Default language
+    website: 'https://afterworkarchives.vercel.app/', // Site domain
+    title: 'ZaanaAfterWork', // Site title
+    author: 'Suzaana', // Author name
+    description: 'Zaana after work', // Site description
+    language: 'ko-KR' // Default language
   },
+
+  // MENU SETTINGS (추가된 부분) ////////////////////////////////////////////////////////////////////////////
+  // 여기에 적는 순서대로 상단 메뉴에 나타납니다.
+  nav: [
+    { text: 'Log', href: '/log' },
+    { text: 'Reviews', href: '/reviews' },
+    { text: 'Works', href: '/works' },
+    //{ text: 'About', href: '/about' },
+  ],
 
   // GENERAL SETTINGS ////////////////////////////////////////////////////////////////////////////////////
   general: {

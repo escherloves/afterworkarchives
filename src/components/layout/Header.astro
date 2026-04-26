@@ -1,28 +1,77 @@
 ---
 import { themeConfig } from '@/config'
 import ThemeToggle from '@/components/ui/ThemeToggle.astro'
+
+// config에서 nav 메뉴 정보를 가져옵니다.
+const { nav } = themeConfig
 ---
 
 <header>
   <nav>
-    <a href="/">{themeConfig.site.title}</a>
-    {themeConfig.general.themeToggle && <ThemeToggle />}
+    <a href="/" class="site-title">{themeConfig.site.title}</a>
+    
+    <div class="nav-wrapper">
+      <ul class="nav-links">
+        {nav && nav.map((item) => (
+          <li>
+            <a href={item.href}>{item.text}</a>
+          </li>
+        ))}
+      </ul>
+      {themeConfig.general.themeToggle && <ThemeToggle />}
+    </div>
   </nav>
 </header>
+
 <style>
   header {
-    margin: 0;
+    margin: 2rem 0; /* 상단 여백을 살짝 주었습니다 */
   }
   nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  header a {
+  .site-title {
     font-weight: var(--font-weight-bold);
     color: var(--text-primary);
     text-decoration: none;
     min-width: 3rem;
-    display: inline-block;
+  }
+  
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* 메뉴와 테마 버튼 사이 간격 */
+  }
+
+  .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.2rem; /* 각 메뉴 글자 사이의 간격 */
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--text-primary); /* 마우스 올렸을 때 더 진해짐 */
+  }
+
+  /* 모바일 배려: 화면이 작아지면 메뉴 간격을 좁힙니다 */
+  @media (max-width: 640px) {
+    .nav-links {
+      gap: 0.8rem;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+    }
   }
 </style>

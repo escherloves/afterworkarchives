@@ -8,18 +8,26 @@ const {
   format,
   context = 'default'
 } = Astro.props as FormattedDateProps & { context?: 'list' | 'post' | 'default' }
+
+// 💡 안전하게 Date 객체로 변환 (Type Casting & Guard)
+const validDate = date instanceof Date ? date : new Date(date);
+
+// 날짜가 유효한지 최종 확인 (Invalid Date 방지)
+const isValid = !isNaN(validDate.getTime());
 ---
 
-<time
-  datetime={date.toISOString()}
-  class={!themeConfig.date.dateOnRight &&
-  (themeConfig.date.dateFormat === 'MONTH DAY YYYY' || themeConfig.date.dateFormat === 'DAY MONTH YYYY') &&
-  context === 'list'
-    ? 'date-left'
-    : ''}
->
-  <Fragment set:html={formatDate(date, format)} />
-</time>
+{isValid && (
+  <time
+    datetime={validDate.toISOString()}
+    class={!themeConfig.date.dateOnRight &&
+    (themeConfig.date.dateFormat === 'MONTH DAY YYYY' || themeConfig.date.dateFormat === 'DAY MONTH YYYY') &&
+    context === 'list'
+      ? 'date-left'
+      : ''}
+  >
+    <Fragment set:html={formatDate(validDate, format)} />
+  </time>
+)}
 
 <style>
   .date-left {

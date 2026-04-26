@@ -1,0 +1,32 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content'
+import PostLayout from '@/layouts/PostLayout.astro'
+import { render } from 'astro:content'
+
+export async function getStaticPaths() {
+  const reviews = await getCollection('reviews');
+  
+  return reviews
+    .filter(entry => !entry.id.startsWith('_')) 
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: entry,
+    }));
+}
+
+// 에러 방지를 위해 Props 타입을 명확히 정의합니다.
+interface Props {
+  entry: CollectionEntry<'reviews'>;
+}
+
+// Astro.props에서 직접 데이터를 가져옵니다.
+const reviews = Astro.props;
+const { Content, remarkPluginFrontmatter } = await render(reviews);
+
+const readingTime = remarkPluginFrontmatter.readingTime;
+const toc = remarkPluginFrontmatter.toc || [];
+---
+
+<PostLayout {...reviews.data} readingTime={readingTime} toc={toc}>
+  <Content />
+</PostLayout>
