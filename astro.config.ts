@@ -11,19 +11,26 @@ import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import remarkTOC from './src/plugins/remark-toc.mjs'
 import { themeConfig } from './src/config'
-import { imageConfig } from './src/utils/image-config'
 import path from 'path'
-import netlify from '@astrojs/netlify'
+import vercel from '@astrojs/vercel'
 
 export default defineConfig({
-  adapter: netlify(), // Set adapter for deployment, or set `linkCard` to `false` in `src/config.ts`
+  // Vercel 배포를 위한 어댑터 설정 (이미지 서비스 최적화 포함)
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+    imagesConfig: {
+      sizes: [320, 640, 1280],
+      domains: []
+    },
+    imageService: true
+  }),
+
+  output: 'server', // Vercel의 서버리스 기능을 활용하기 위해 추가
   site: themeConfig.site.website,
-  image: {
-    service: {
-      entrypoint: 'astro/assets/services/sharp',
-      config: imageConfig
-    }
-  },
+
+  // 기존의 복잡한 image 설정을 제거하고 Astro 기본값과 Vercel 어댑터에 위임합니다.
+  // 이 조치로 .netlify/images 경로로 꼬이던 문제가 해결됩니다.
+
   markdown: {
     shikiConfig: {
       theme: 'css-variables',
@@ -32,7 +39,9 @@ export default defineConfig({
     remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
+
   integrations: [mdx(), sitemap()],
+
   vite: {
     resolve: {
       alias: {
@@ -40,6 +49,7 @@ export default defineConfig({
       }
     }
   },
+
   devToolbar: {
     enabled: false
   }
