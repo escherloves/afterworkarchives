@@ -4,27 +4,27 @@ import PostLayout from '@/layouts/PostLayout.astro'
 import { render } from 'astro:content'
 
 export async function getStaticPaths() {
-  const log = await getCollection('log');
-  
+  const log = await getCollection('log')
+
   return log
-    .filter(entry => !entry.id.startsWith('_')) 
+    .filter((entry) => !entry.id.startsWith('_'))
     .map((entry) => ({
       params: { slug: entry.id },
-      props: entry,
-    }));
+      props: entry
+    }))
 }
 
 // 에러 방지를 위해 Props 타입을 명확히 정의합니다.
 interface Props {
-  entry: CollectionEntry<'log'>;
+  entry: CollectionEntry<'log'>
 }
 
 // Astro.props에서 직접 데이터를 가져옵니다.
-const log = Astro.props;
-const { Content, remarkPluginFrontmatter } = await render(log);
+const log = Astro.props
+const { Content, remarkPluginFrontmatter } = await render(log)
 
-const readingTime = remarkPluginFrontmatter.readingTime;
-const toc = remarkPluginFrontmatter.toc || [];
+const readingTime = remarkPluginFrontmatter.readingTime
+const toc = remarkPluginFrontmatter.toc || []
 ---
 
 <PostLayout {...log.data} readingTime={readingTime} toc={toc}>

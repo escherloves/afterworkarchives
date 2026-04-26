@@ -15,7 +15,7 @@ export const themeConfig: ThemeConfig = {
   nav: [
     { text: 'Log', href: '/log' },
     { text: 'Reviews', href: '/reviews' },
-    { text: 'Works', href: '/works' },
+    { text: 'Works', href: '/works' }
     //{ text: 'About', href: '/about' },
   ],
 

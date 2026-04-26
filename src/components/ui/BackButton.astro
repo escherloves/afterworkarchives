@@ -2,12 +2,12 @@
 import { themeConfig } from '@/config'
 
 // 💡 URL 경로를 분석하여 현재 카테고리(log, reviews, works)를 파악합니다.
-const pathname = Astro.url.pathname;
-const pathSegments = pathname.split('/').filter(Boolean);
-const category = pathSegments[0]; // 'log', 'reviews', 'works' 중 하나가 잡힙니다.
+const pathname = Astro.url.pathname
+const pathSegments = pathname.split('/').filter(Boolean)
+const category = pathSegments[0] // 'log', 'reviews', 'works' 중 하나가 잡힙니다.
 
 // 만약 카테고리가 존재한다면 해당 목록 페이지로, 아니라면 홈(/)으로 보냅니다.
-const backHref = category ? `/${category}` : '/';
+const backHref = category ? `/${category}` : '/'
 ---
 
 <a href={backHref} class="back-button">
@@ -47,7 +47,7 @@ const backHref = category ? `/${category}` : '/';
       const shouldUseCustomWidth = widthValue > 25
       const finalWidthValue = shouldUseCustomWidth ? widthValue : 25
       const margin = (pageWidth - finalWidthValue * 16) / 2
-      const baseMinSpace = 11 * 16 
+      const baseMinSpace = 11 * 16
       const minSpace = toc ? baseMinSpace + 52 : baseMinSpace + 12
 
       if (margin >= minSpace) {

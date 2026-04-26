@@ -7,7 +7,7 @@ const blogSchema = z.object({
   title: z.string(),
   pubDate: z.coerce.date(),
   image: z.string().optional(),
-  description: z.string().optional(), // 필요시 추가
+  description: z.string().optional() // 필요시 추가
 })
 
 // 1. 컬렉션

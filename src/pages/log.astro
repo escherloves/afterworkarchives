@@ -1,11 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
-import IndexLayout from '@/layouts/IndexLayout.astro';
-import { themeConfig } from '@/config';
+import { getCollection } from 'astro:content'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import { themeConfig } from '@/config'
 
 const posts = (await getCollection('log'))
-  .filter(post => !post.id.startsWith('_'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .filter((post) => !post.id.startsWith('_'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
 <IndexLayout title={`Log - ${themeConfig.site.title}`}>
@@ -16,35 +16,82 @@ const posts = (await getCollection('log'))
     </header>
 
     <ul class="custom-post-list">
-      {posts.map((post) => (
-        <li class="custom-post-item">
-          <a href={`/log/${post.id}`} class="post-link">
-            <span class="post-title">{post.data.title}</span>
-            <span class="post-divider"></span>
-            <span class="post-date">
-              {post.data.pubDate.toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-              }).replace(/\s/g, '').slice(0, -1)}
-            </span>
-          </a>
-        </li>
-      ))}
+      {
+        posts.map((post) => (
+          <li class="custom-post-item">
+            <a href={`/log/${post.id}`} class="post-link">
+              <span class="post-title">{post.data.title}</span>
+              <span class="post-divider" />
+              <span class="post-date">
+                {post.data.pubDate
+                  .toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                  })
+                  .replace(/\s/g, '')
+                  .slice(0, -1)}
+              </span>
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </main>
 </IndexLayout>
 
 <style>
-  .archive-container { margin-top: 2rem; }
-  .archive-header { margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--text-secondary); opacity: 0.8; }
-  .archive-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .archive-description { font-size: 0.9rem; opacity: 0.6; }
-  .custom-post-list { list-style: none; padding: 0; }
-  .custom-post-item { margin-bottom: 1rem; }
-  .post-link { display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-primary); transition: all 0.2s ease; }
-  .post-link:hover { opacity: 0.5; transform: translateX(4px); }
-  .post-title { font-weight: 500; font-size: 1rem; }
-  .post-divider { flex-grow: 1; margin: 0 1rem; border-bottom: 1px dotted var(--text-secondary); opacity: 0.15; }
-  .post-date { font-size: 0.85rem; opacity: 0.4; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .archive-container {
+    margin-top: 2rem;
+  }
+  .archive-header {
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--text-secondary);
+    opacity: 0.8;
+  }
+  .archive-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .archive-description {
+    font-size: 0.9rem;
+    opacity: 0.6;
+  }
+  .custom-post-list {
+    list-style: none;
+    padding: 0;
+  }
+  .custom-post-item {
+    margin-bottom: 1rem;
+  }
+  .post-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+  }
+  .post-link:hover {
+    opacity: 0.5;
+    transform: translateX(4px);
+  }
+  .post-title {
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .post-divider {
+    flex-grow: 1;
+    margin: 0 1rem;
+    border-bottom: 1px dotted var(--text-secondary);
+    opacity: 0.15;
+  }
+  .post-date {
+    font-size: 0.85rem;
+    opacity: 0.4;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
 </style>

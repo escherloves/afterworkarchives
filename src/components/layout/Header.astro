@@ -9,14 +9,17 @@ const { nav } = themeConfig
 <header>
   <nav>
     <a href="/" class="site-title">{themeConfig.site.title}</a>
-    
+
     <div class="nav-wrapper">
       <ul class="nav-links">
-        {nav && nav.map((item) => (
-          <li>
-            <a href={item.href}>{item.text}</a>
-          </li>
-        ))}
+        {
+          nav &&
+            nav.map((item) => (
+              <li>
+                <a href={item.href}>{item.text}</a>
+              </li>
+            ))
+        }
       </ul>
       {themeConfig.general.themeToggle && <ThemeToggle />}
     </div>
@@ -38,7 +41,7 @@ const { nav } = themeConfig
     text-decoration: none;
     min-width: 3rem;
   }
-  
+
   .nav-wrapper {
     display: flex;
     align-items: center;
