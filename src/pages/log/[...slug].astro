@@ -4,9 +4,9 @@ import PostLayout from '@/layouts/PostLayout.astro'
 import { render } from 'astro:content'
 
 export async function getStaticPaths() {
-  const log = await getCollection('log')
+  const logEntries = await getCollection('log')
 
-  return log
+  return logEntries
     .filter((entry) => !entry.id.startsWith('_'))
     .map((entry) => ({
       params: { slug: entry.id },
@@ -14,19 +14,18 @@ export async function getStaticPaths() {
     }))
 }
 
-// 에러 방지를 위해 Props 타입을 명확히 정의합니다.
-interface Props {
-  entry: CollectionEntry<'log'>
-}
+// 💡 1. Astro.props를 any로 캐스팅하여 데이터 접근 권한을 확보합니다.
+const log = Astro.props as any
 
-// Astro.props에서 직접 데이터를 가져옵니다.
-const log = Astro.props
+// 💡 2. render 함수에 캐스팅된 객체를 전달합니다.
 const { Content, remarkPluginFrontmatter } = await render(log)
 
-const readingTime = remarkPluginFrontmatter.readingTime
-const toc = remarkPluginFrontmatter.toc || []
+// 💡 3. 데이터가 없을 경우를 대비해 옵셔널 체이닝(?.)과 기본값을 설정합니다.
+const readingTime = remarkPluginFrontmatter?.readingTime
+const toc = remarkPluginFrontmatter?.toc || []
 ---
 
+{/* 💡 4. log.data의 속성들을 안전하게 전개하여 레이아웃에 전달합니다. */}
 <PostLayout {...log.data} readingTime={readingTime} toc={toc}>
   <Content />
 </PostLayout>

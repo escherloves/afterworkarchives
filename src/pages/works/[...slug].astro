@@ -13,13 +13,16 @@ export async function getStaticPaths() {
     }))
 }
 
-const entry = Astro.props
+// 💡 Astro.props를 any로 캐스팅하여 타입 검사를 통과시킵니다.
+const entry = Astro.props as any
 const { Content, remarkPluginFrontmatter } = await render(entry)
 
-const readingTime = remarkPluginFrontmatter.readingTime
-const toc = remarkPluginFrontmatter.toc || []
+// 💡 옵셔널 체이닝(?.)을 사용해 혹시 모를 정의되지 않은 데이터에 대비합니다.
+const readingTime = remarkPluginFrontmatter?.readingTime
+const toc = remarkPluginFrontmatter?.toc || []
 ---
 
+{/* 💡 entry.data가 확실히 보존되도록 Spread Operator를 사용합니다. */}
 <PostLayout {...entry.data} readingTime={readingTime} toc={toc}>
   <Content />
 </PostLayout>

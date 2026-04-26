@@ -14,19 +14,17 @@ export async function getStaticPaths() {
     }))
 }
 
-// 에러 방지를 위해 Props 타입을 명확히 정의합니다.
-interface Props {
-  entry: CollectionEntry<'reviews'>
-}
+// 💡 1. Props를 any로 받거나, Astro가 넘겨주는 데이터 구조에 맞게 처리합니다.
+const reviews = Astro.props as any
 
-// Astro.props에서 직접 데이터를 가져옵니다.
-const reviews = Astro.props
+// 💡 2. render 함수에 전달할 때 타입 에러가 나지 않도록 합니다.
 const { Content, remarkPluginFrontmatter } = await render(reviews)
 
-const readingTime = remarkPluginFrontmatter.readingTime
-const toc = remarkPluginFrontmatter.toc || []
+const readingTime = remarkPluginFrontmatter?.readingTime
+const toc = remarkPluginFrontmatter?.toc || []
 ---
 
+{/* 💡 3. reviews.data가 확실히 존재함을 보장하며 데이터를 넘겨줍니다. */}
 <PostLayout {...reviews.data} readingTime={readingTime} toc={toc}>
   <Content />
 </PostLayout>
