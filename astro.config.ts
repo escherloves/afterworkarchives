@@ -15,21 +15,20 @@ import path from 'path'
 import vercel from '@astrojs/vercel'
 
 export default defineConfig({
-  // Vercel 배포를 위한 어댑터 설정 (이미지 서비스 최적화 포함)
+  // 💡 정적 사이트 생성을 위해 output을 'static'으로 설정하거나 제거합니다.
+  // 마크다운 블로그에는 이 방식이 가장 오류가 적고 빠릅니다.
+  output: 'static',
+
   adapter: vercel({
     webAnalytics: { enabled: true },
     imagesConfig: {
       sizes: [320, 640, 1280],
       domains: []
-    },
-    imageService: true
+    }
+    // 💡 _vercel 컬렉션 충돌을 방지하기 위해 imageService: true 옵션을 제거했습니다.
   }),
 
-  output: 'server', // Vercel의 서버리스 기능을 활용하기 위해 추가
   site: themeConfig.site.website,
-
-  // 기존의 복잡한 image 설정을 제거하고 Astro 기본값과 Vercel 어댑터에 위임합니다.
-  // 이 조치로 .netlify/images 경로로 꼬이던 문제가 해결됩니다.
 
   markdown: {
     shikiConfig: {
