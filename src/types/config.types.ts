@@ -44,9 +44,9 @@ export interface ThemeConfig {
   general: GeneralSettings
   date: DateSettings
   post: PostSettings
-  
+
   nav?: Array<{
-    text: string  // 💡 'name' 대신 'text'로 바꿉니다!
+    text: string // 💡 'name' 대신 'text'로 바꿉니다!
     href: string
   }>
 }
