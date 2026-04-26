@@ -42,4 +42,9 @@ export interface ThemeConfig {
   general: GeneralSettings
   date: DateSettings
   post: PostSettings
+  // 💡 아래 내용을 추가합니다!
+  nav?: Array<{
+    name: string
+    href: string
+  }>
 }
