@@ -37,14 +37,16 @@ export interface PostSettings {
 }
 
 // Theme configuration type
+// src/types.ts
+
 export interface ThemeConfig {
   site: SiteInfo
   general: GeneralSettings
   date: DateSettings
   post: PostSettings
-  // 💡 아래 내용을 추가합니다!
+  
   nav?: Array<{
-    name: string
+    text: string  // 💡 'name' 대신 'text'로 바꿉니다!
     href: string
   }>
 }
