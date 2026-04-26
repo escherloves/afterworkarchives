@@ -5,7 +5,7 @@ pubDate: 2025-11-15
 
 마신 것: 플럼 와인 두 잔 - Choya Black (우메슈랑 비슷했다.)
 
-![kikuko golden gai](/images/kikuko.jpg)
+![kikuko golden gai](/images/kikuko.png)
 
 우리는 골든 거리를 좋아한다. 올 때마다 한 번 씩은 가 줘야 과업을 달성한 기분이 든다.
 
