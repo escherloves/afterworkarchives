@@ -4,24 +4,24 @@ import PostLayout from '@/layouts/PostLayout.astro'
 import { render } from 'astro:content'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts')
-  return posts
-    .filter((post) => !post.id.startsWith('_'))
-    .map((post) => ({
-      params: { slug: post.id },
-      props: post
+  const projects = await getCollection('projects')
+  return projects
+    .filter((entry) => !entry.id.startsWith('_'))
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: entry
     }))
 }
 
-type Props = CollectionEntry<'posts'>
+type Props = CollectionEntry<'projects'>
 
-const post = Astro.props
-const { Content, remarkPluginFrontmatter } = await render(post)
+const projects = Astro.props
+const { Content, remarkPluginFrontmatter } = await render(projects)
 
 const readingTime = remarkPluginFrontmatter.readingTime
 const toc = remarkPluginFrontmatter.toc || []
 ---
 
-<PostLayout {...post.data} readingTime={readingTime} toc={toc}>
+<PostLayout {...projects.data} readingTime={readingTime} toc={toc}>
   <Content />
 </PostLayout>

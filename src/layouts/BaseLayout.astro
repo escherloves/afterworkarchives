@@ -5,6 +5,9 @@ import ThemeManager from '@/components/ui/ThemeManager.astro'
 import FaviconThemeSwitcher from '@/components/ui/FaviconThemeSwitcher.astro'
 import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
 import type { LayoutProps } from '@/types'
+// 기존 임포트들 아래에 추가
+import Analytics from '@vercel/analytics/astro'
+---
 
 type Props = LayoutProps
 
@@ -22,6 +25,7 @@ const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
     <ThemeManager />
     {fadeAnimation && <ClientRouter />}
     <slot name="head" />
+    <Analytics />
   </head>
   <body
     data-centered={themeConfig.general.centeredLayout}
@@ -68,3 +72,5 @@ const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
     min-height: 0;
   }
 </style>
+
+---
