@@ -5,7 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 const posts = (await getCollection('reviews')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
-<BaseLayout title="Reviews">
+<BaseLayout title="Reviews" type="page">
   <main>
     <h1 class="page-title">Reviews</h1>
     <ul class="custom-post-list">

@@ -5,21 +5,26 @@ import ThemeManager from '@/components/ui/ThemeManager.astro'
 import FaviconThemeSwitcher from '@/components/ui/FaviconThemeSwitcher.astro'
 import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
 import type { LayoutProps } from '@/types'
-// 기존 임포트들 아래에 추가
 import Analytics from '@vercel/analytics/astro'
----
 
-type Props = LayoutProps const {(type = 'page')} = Astro.props const language = themeConfig.site.language || 'en-US' const
-contentWidth = themeConfig.general.contentWidth const fadeAnimation = themeConfig.general.fadeAnimation const widthValue =
-Math.min(parseFloat(contentWidth), 50) const shouldUseCustomWidth = widthValue > 25 const finalWidth = shouldUseCustomWidth
-? `${widthValue}rem` : '25rem' ---
+// 💡 모든 로직은 반드시 여기 --- 안쪽에 있어야 합니다!
+type Props = LayoutProps
+
+const { type = 'page' } = Astro.props
+const language = themeConfig.site.language || 'en-US'
+const contentWidth = themeConfig.general.contentWidth
+const fadeAnimation = themeConfig.general.fadeAnimation
+const widthValue = Math.min(parseFloat(contentWidth), 50)
+const shouldUseCustomWidth = widthValue > 25
+const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '100%' // 기본값을 100%로 잡는 것이 안전합니다.
+---
 
 <html lang={language}>
   <head>
+    <Analytics />
     <ThemeManager />
     {fadeAnimation && <ClientRouter />}
     <slot name="head" />
-    <Analytics />
   </head>
   <body
     data-centered={themeConfig.general.centeredLayout}
@@ -66,5 +71,3 @@ Math.min(parseFloat(contentWidth), 50) const shouldUseCustomWidth = widthValue >
     min-height: 0;
   }
 </style>
-
----
