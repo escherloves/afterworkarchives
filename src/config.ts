@@ -4,7 +4,7 @@ export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
     website: 'https://afterworkarchives.vercel.app/', // Site domain
-    title: '수진이에요', // Site title
+    title: '@escherloves', // Site title
     author: 'escherloves', // Author name
     description: 'Zaana after work', // Site description
     language: 'ko-KR' // Default language
